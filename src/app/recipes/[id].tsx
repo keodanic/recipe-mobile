@@ -31,12 +31,14 @@ export default function RecipeDetail() {
         <Image source={{ uri: recipe.image }} style={styles.image} />
       )}
 
-      <Text style={styles.sectionTitle}>Ingredientes:</Text>
-      {recipe.ingredients?.map((item, idx) => (
-        <Text key={idx} style={styles.listItem}>• {item}</Text>
-      ))}
+      <Text style={styles.sectionTitle}>Ingredientes</Text>
+      <View style={styles.listContainer}>
+        {recipe.ingredients?.map((item, idx) => (
+          <Text key={idx} style={styles.listItem}>• {item}</Text>
+        ))}
+      </View>
 
-      <Text style={styles.sectionTitle}>Instruções:</Text>
+      <Text style={styles.sectionTitle}>Instruções</Text>
       <Text style={styles.instructions}>{recipe.instructions}</Text>
     </ScrollView>
   );
@@ -45,36 +47,49 @@ export default function RecipeDetail() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    backgroundColor: '#1E1B26',
+    flex:1
   },
   loadingText: {
     padding: 20,
     textAlign: 'center',
     fontSize: 16,
+    color: '#FFCC00',
+    backgroundColor: '#1E1B26',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 12,
+    color: '#FFCC00',
+    marginBottom: 16,
+    textAlign: 'center',
   },
   image: {
     width: '100%',
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 16,
+    height: 220,
+    borderRadius: 12,
+    marginBottom: 20,
+    backgroundColor: '#2A2733',
   },
   sectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    fontSize: 18,
-    marginTop: 16,
-    marginBottom: 8,
+    color: '#FFCC00',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  listContainer: {
+    marginLeft: 10,
   },
   listItem: {
     fontSize: 16,
-    marginLeft: 10,
-    marginBottom: 4,
+    color: '#FFFFFF',
+    marginBottom: 6,
   },
   instructions: {
     fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 24,
+    color: '#FFFFFF',
+    marginTop: 4,
   },
 });
