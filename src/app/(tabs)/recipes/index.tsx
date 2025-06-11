@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { ClockIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type Recipe = {
   id: number;
   name: string;
   image: string;
+  prepTimeMinutes?: number;
+  cookTimeMinutes?: number;
 };
 
 export default function RecipeList() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState('');
   const router = useRouter();
+   
 
   useEffect(() => {
     fetch(`https://dummyjson.com/recipes/search?q=${search}`)
@@ -21,81 +26,59 @@ export default function RecipeList() {
   }, [search]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Explore Receitas</Text>
-      <TextInput
-        placeholder="Buscar receitas..."
-        value={search}
-        onChangeText={setSearch}
-        style={styles.searchInput}
-        placeholderTextColor="#FFCC00"
-      />
-      <FlatList
-        data={recipes}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => router.push(`/recipes/${item.id}`)}
-            style={styles.recipeCard}
-          >
-            <Image source={{ uri: item.image }} style={styles.recipeImage} />
-            <View style={styles.recipeInfo}>
-              <Text style={styles.recipeName}>{item.name}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={{ paddingBottom: 16 }}
-      />
-    </View>
-  );
-}
+  <View className="flex-1 bg-[#FFF8F0]">
+    
+    <LinearGradient
+      colors={['#8B5A2B', '#D4A59A']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      className="pt-12 pb-6 px-6 rounded-b-3xl shadow-sm"
+    >
+      <Text className="text-2xl font-bold text-white mb-1">Sabores Autênticos</Text>
+      <Text className="text-white opacity-95">Descubra receitas que encantam</Text>
+      
+      
+      <View className="mt-4 bg-white bg-opacity-90 rounded-full flex-row items-center px-4 py-2 shadow">
+        <MagnifyingGlassIcon size={20} color="#8B5A2B" />
+        <TextInput
+          placeholder="Buscar receitas..."
+          value={search}
+          onChangeText={setSearch}
+          placeholderTextColor="#D4A59A"
+          className="ml-2 flex-1 text-[#4A3C30]"
+        />
+      </View>
+    </LinearGradient>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#1E1B26',
-  },
-  title: {
-    fontSize: 22,
-    color: '#FFCC00',
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  searchInput: {
-    borderWidth: 2,
-    borderColor: '#FFCC00',
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: '#2A2733',
-    color: '#FFCC00',
-    marginBottom: 16,
-  },
-  recipeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#2A2733',
-    borderRadius: 12,
-    padding: 10,
-    marginBottom: 12,
-    borderWidth: 1.5,
-    borderColor: '#FFCC00',
-    elevation: 4,
-  },
-  recipeImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 10,
-    marginRight: 12,
-    resizeMode: 'cover',
-  },
-  recipeInfo: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  recipeName: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-});
+    
+    <FlatList
+      data={recipes}
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={{ padding: 16 }}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          onPress={() => router.push(`/recipes/${item.id}`)}
+          className="bg-white rounded-2xl p-3 mb-4 shadow-sm flex-row items-center border border-[#F0E6DC]"
+          activeOpacity={0.8}
+        >
+          <Image
+            source={{ uri: item.image }}
+            className="w-20 h-20 rounded-lg mr-4"
+            resizeMode="cover"
+          />
+          <View className="flex-1">
+            <Text className="text-lg font-semibold text-[#4A3C30] mb-1">{item.name}</Text>
+            <View className="flex-row items-center mt-1">
+              <ClockIcon size={16} color="#6B8E23" />
+              <Text className="text-xs text-[#8B5A2B] ml-1">25 min</Text>
+              <View className="bg-[#F3E9E0] rounded-full px-2 py-1 ml-3">
+                <Text className="text-xs text-[#C06C84]">Fácil</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+    />
+  </View>
+);
+}
